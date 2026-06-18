@@ -57,22 +57,24 @@ export default function AdminLayout({ activeMenu, setActiveMenu, setCurrentPage,
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      {/* Single NotificationBell — SATU untuk semua ukuran layar */}
+      {/* Mobile Header */}
       {!sidebarOpen && isMobile && (
-        <div className="fixed top-4 right-4 z-50">
+        <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm px-4 py-3 flex items-center justify-between">
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="p-2 hover:bg-gray-100 rounded-lg"
+            aria-label="Buka menu"
+          >
+            <Menu className="w-5 h-5 text-gray-700" />
+          </button>
+          <div className="flex items-center gap-2">
+            <Leaf className="w-5 h-5 text-[#16A34A]" />
+            <span className="font-semibold text-gray-800 text-sm capitalize truncate max-w-[160px]">
+              {getMenuLabel(activeMenu)}
+            </span>
+          </div>
           <NotificationBell dark={false} alignLeft />
-        </div>
-      )}
-
-      {/* Floating Menu Button on Mobile */}
-      {!sidebarOpen && isMobile && (
-        <button
-          className="fixed top-4 left-4 z-50 p-2 bg-gray-900 text-white rounded-full shadow-lg hover:bg-gray-800 transition"
-          onClick={() => setSidebarOpen(true)}
-          aria-label="Buka menu"
-        >
-          <Menu className="w-5 h-5" />
-        </button>
+        </header>
       )}
 
       {/* Mobile Overlay */}
@@ -176,7 +178,7 @@ export default function AdminLayout({ activeMenu, setActiveMenu, setCurrentPage,
         </header>
 
         {/* Page Content */}
-        <div className="p-4 lg:p-6">
+        <div className={`${isMobile ? 'pt-14 px-4 pb-4' : 'p-4'} lg:p-6`}>
           {children}
         </div>
       </div>

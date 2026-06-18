@@ -660,18 +660,47 @@ export const updateInvitationStatus = async (id, status) => {
 export const getDashboardStats = async (period = '30days') => {
   const { data, error } = await supabase.rpc('get_dashboard_stats', { period })
   if (error) throw error
-  return data
+  // Transform array of { metric, value, change_percent } into flat object
+  const stats = {}
+  if (Array.isArray(data)) {
+    data.forEach(row => {
+      const key = row.metric
+      stats[key] = Number(row.value) || 0
+      stats[key.replace('total_', '') + '_change'] = (row.change_percent >= 0 ? '+' : '') + (Number(row.change_percent) || 0) + '%'
+    })
+  }
+  // Map total_items_sold -> total_products_sold for frontend compatibility
+  if (stats.total_items_sold !== undefined) {
+    stats.total_products_sold = stats.total_items_sold
+  }
+  return stats
 }
 
 export const getSalesData = async (days = 30) => {
   const { data, error } = await supabase.rpc('get_sales_data', { days })
   if (error) throw error
+  // Map sale_date -> date, revenue -> penjualan for frontend compatibility
+  if (Array.isArray(data)) {
+    return data.map(row => ({
+      date: row.sale_date || '',
+      penjualan: Number(row.revenue) || 0
+    }))
+  }
   return data
 }
 
 export const getCategorySales = async () => {
   const { data, error } = await supabase.rpc('get_category_sales')
   if (error) throw error
+  // Map category_name -> name, sales -> value, and add colors
+  const categoryColors = ['#16A34A', '#15803D', '#22C55E', '#4ADE80', '#86EFAC', '#BBF7D0', '#6B7280', '#9CA3AF']
+  if (Array.isArray(data)) {
+    return data.map((row, idx) => ({
+      name: row.category_name || '',
+      value: Number(row.sales) || 0,
+      color: categoryColors[idx % categoryColors.length]
+    }))
+  }
   return data
 }
 

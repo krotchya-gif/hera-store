@@ -314,7 +314,14 @@ const Navbar = ({
                       {link.label}
                     </button>
                   ))}
-                  {user && (
+                </div>
+              </div>
+
+              {/* Akun Section */}
+              {user && (
+                <div className="space-y-2">
+                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider pt-2">Akun</p>
+                  <div className="grid grid-cols-1 gap-2">
                     <button
                       onClick={() => {
                         setMobileMenuOpen(false);
@@ -324,24 +331,24 @@ const Navbar = ({
                         currentPage === 'profile' ? 'bg-[#DCFCE7] text-[#15803D]' : 'text-gray-700 hover:bg-gray-50'
                       }`}
                     >
-                      Profil Saya
+                      <User className="w-4 h-4 inline mr-2" />Profil Saya
                     </button>
-                  )}
-                  {isAdmin && (
-                    <button
-                      onClick={() => {
-                        setMobileMenuOpen(false);
-                        setCurrentPage('admin');
-                      }}
-                      className={`text-left py-2 px-3 rounded-lg text-sm font-medium transition ${
-                        currentPage === 'admin' ? 'bg-[#DCFCE7] text-[#15803D]' : 'text-gray-700 hover:bg-gray-50'
-                      }`}
-                    >
-                      Admin Panel
-                    </button>
-                  )}
+                    {isAdmin && (
+                      <button
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          setCurrentPage('admin');
+                        }}
+                        className={`text-left py-2 px-3 rounded-lg text-sm font-medium transition ${
+                          currentPage === 'admin' ? 'bg-[#DCFCE7] text-[#15803D]' : 'text-gray-700 hover:bg-gray-50'
+                        }`}
+                      >
+                        <BarChart3 className="w-4 h-4 inline mr-2" />Admin Panel
+                      </button>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Logout button at bottom */}
               {user && (

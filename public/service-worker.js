@@ -33,8 +33,8 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Skip non-GET requests and Supabase realtime/WebSocket
-  if (request.method !== 'GET' || url.protocol === 'wss:' || url.pathname.includes('/socket')) {
+  // Skip non-GET requests, non-http(s) schemes (chrome-extension, etc), and WebSocket
+  if (request.method !== 'GET' || !url.protocol.startsWith('http') || url.protocol === 'wss:' || url.pathname.includes('/socket')) {
     return;
   }
 
