@@ -19,7 +19,7 @@ const AdminDashboard = ({ setCurrentPage }) => {
   const renderContent = () => {
     switch (activeMenu) {
       case 'dashboard':
-        return <DashboardOverview />;
+        return <DashboardOverview setActiveMenu={setActiveMenu} />;
       case 'products':
         return <ProductManagement />;
       case 'orders':

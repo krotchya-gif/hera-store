@@ -26,6 +26,7 @@ export default function StoreSettings() {
     { id: 'shipping', label: 'Pengiriman' },
     { id: 'payment', label: 'Pembayaran' },
     { id: 'notification', label: 'Notifikasi' },
+    { id: 'livechat', label: 'Live Chat' },
     { id: 'admin', label: 'Admin & Hak Akses' },
   ];
 
@@ -279,6 +280,45 @@ export default function StoreSettings() {
               </label>
             </div>
           ))}
+        </div>
+      )}
+
+      {activeTab === 'livechat' && (
+        <div className="space-y-4 max-w-2xl">
+          <h3 className="font-semibold">Konfigurasi Live Chat</h3>
+          <p className="text-sm text-gray-500 mb-3">
+            Paste kode widget Tawk.to di bawah untuk mengaktifkan live chat. 
+            Jika dikosongkan, FAQ bot akan ditampilkan secara otomatis.
+          </p>
+          <div>
+            <label className="block text-sm font-medium mb-1">Kode Widget Tawk.to</label>
+            <textarea
+              rows="8"
+              defaultValue={settings?.live_chat_script || ''}
+              id="live-chat-script"
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm font-mono focus:ring-2 focus:ring-[#16A34A] outline-none"
+              placeholder="&lt;!--Start of Tawk.to Script--&gt;
+              &lt;script type=&quot;text/javascript&quot;&gt;
+              var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+              (function(){
+              ...
+              })();
+              &lt;/script&gt;
+              &lt;!--End of Tawk.to Script--&gt;"
+            ></textarea>
+          </div>
+          <button
+            onClick={() => handleSave({ live_chat_script: document.getElementById('live-chat-script').value })}
+            disabled={saving}
+            className="bg-[#16A34A] text-white px-6 py-2 rounded-lg font-medium hover:bg-[#15803D] disabled:opacity-50"
+          >
+            {saving ? 'Menyimpan...' : 'Simpan Pengaturan Live Chat'}
+          </button>
+          {settings?.live_chat_script && (
+            <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-sm text-green-700">
+              ✅ Live chat aktif. Widget akan muncul di halaman toko.
+            </div>
+          )}
         </div>
       )}
 

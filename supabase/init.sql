@@ -316,6 +316,7 @@ CREATE TABLE public.store_settings (
   bank_accounts JSONB DEFAULT '[]',
   email_notifications JSONB DEFAULT '{}',
   whatsapp_notifications JSONB DEFAULT '{}',
+  live_chat_script TEXT,
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 

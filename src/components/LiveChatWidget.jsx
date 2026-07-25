@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { MessageCircle, X, Send, Minimize2, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
+import { getStoreSettings } from '../lib/api';
 
 const QUICK_REPLIES = [
   'Bagaimana cara pesan?',
@@ -16,6 +17,21 @@ const BOT_RESPONSES = {
   'Cara retur produk?': 'Retur bisa dilakukan dalam 14 hari setelah produk diterima. Hubungi kami di support@herastore.com dengan foto produk. 🔄',
   'Promo apa yang tersedia?': 'Cek halaman **Flash Sale** dan **Promo** untuk penawaran terkini! Atau masukkan kode promo di keranjang. 🎁',
   'default': 'Terima kasih sudah menghubungi Hera Store! Tim kami akan segera merespons. Sementara itu, cek FAQ kami untuk jawaban cepat. 😊',
+};
+
+const extractTawktoUrl = (scriptContent) => {
+  const match = scriptContent.match(/s1\.src='([^']+)'/) || scriptContent.match(/s1\.src="([^"]+)"/);
+  return match ? match[1] : null;
+};
+
+const injectTawkto = (scriptContent) => {
+  const existing = document.getElementById('hera-tawkto');
+  if (existing) return;
+
+  const wrapper = document.createElement('div');
+  wrapper.id = 'hera-tawkto';
+  wrapper.innerHTML = scriptContent;
+  document.body.appendChild(wrapper);
 };
 
 export default function LiveChatWidget() {
@@ -33,7 +49,19 @@ export default function LiveChatWidget() {
   ]);
   const [isTyping, setIsTyping] = useState(false);
   const [unread, setUnread] = useState(0);
+  const [hasTawkto, setHasTawkto] = useState(false);
   const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    getStoreSettings()
+      .then((settings) => {
+        if (settings?.live_chat_script) {
+          setHasTawkto(true);
+          injectTawkto(settings.live_chat_script);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -92,6 +120,28 @@ export default function LiveChatWidget() {
       i % 2 === 1 ? <strong key={i}>{part}</strong> : part
     );
   };
+
+  // If Tawk.to is configured, show only the FAB that triggers Tawk.to
+  if (hasTawkto) {
+    return (
+      <div className="fixed bottom-20 right-5 z-50">
+        <button
+          onClick={() => {
+            if (window.Tawk_API) {
+              window.Tawk_API.toggle();
+            }
+          }}
+          className="relative w-14 h-14 bg-gradient-to-br from-[#16A34A] to-[#15803D] rounded-full shadow-lg hover:shadow-xl flex items-center justify-center text-white transition-all"
+          aria-label="Buka live chat"
+        >
+          <MessageCircle className="w-6 h-6" />
+          {!isOpen && (
+            <span className="absolute w-full h-full rounded-full border-2 border-[#16A34A] animate-ping opacity-30" />
+          )}
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed bottom-20 right-5 z-50 flex flex-col items-end gap-3">

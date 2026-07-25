@@ -12,7 +12,7 @@ import { supabase } from '../../lib/supabase';
 import { formatRupiah } from '../../utils/formatters';
 import { StatCardSkeleton, TableRowSkeleton } from '../../components/Skeleton';
 
-export default function DashboardOverview() {
+export default function DashboardOverview({ setActiveMenu }) {
   const [stats, setStats] = useState(null);
   const [salesData, setSalesData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
@@ -273,7 +273,10 @@ export default function DashboardOverview() {
       <div className="bg-white rounded-xl shadow-sm p-5">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-semibold">Pesanan Terbaru</h3>
-          <button className="text-[#16A34A] text-sm font-medium flex items-center gap-1">
+          <button
+            onClick={() => setActiveMenu?.('orders')}
+            className="text-[#16A34A] text-sm font-medium flex items-center gap-1 hover:underline"
+          >
             Lihat Semua <ArrowRight className="w-4 h-4" />
           </button>
         </div>
@@ -304,7 +307,7 @@ export default function DashboardOverview() {
                       </span>
                     </td>
                     <td className="text-gray-500 pr-4 whitespace-nowrap">{new Date(order.created_at).toLocaleDateString('id-ID')}</td>
-                    <td className="whitespace-nowrap"><button className="text-[#16A34A] hover:underline">Detail</button></td>
+                    <td className="whitespace-nowrap"><button onClick={() => setActiveMenu?.('orders')} className="text-[#16A34A] hover:underline">Detail</button></td>
                   </tr>
                 ))
               ) : (
