@@ -88,7 +88,7 @@ export default function OrderManagement() {
     <>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3">
         <div>
-          <h2 className="text-xl font-bold">Manajemen Pesanan</h2>
+          <h2 className="text-lg lg:text-xl font-bold">Manajemen Pesanan</h2>
           <span className="text-sm text-gray-500">{orders.length} Pesanan</span>
         </div>
         <button

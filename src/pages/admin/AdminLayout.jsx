@@ -151,7 +151,7 @@ export default function AdminLayout({ activeMenu, setActiveMenu, setCurrentPage,
       {/* Main Content */}
       <div className="flex-1 min-w-0">
         {/* Page Content */}
-        <div className={`${isMobile ? 'pt-14 px-4 pb-4' : 'p-4'} lg:p-6`}>
+        <div className={`${isMobile ? 'pt-[68px] px-3 pb-4' : 'p-4'} lg:p-6`}>
           {children}
         </div>
       </div>
