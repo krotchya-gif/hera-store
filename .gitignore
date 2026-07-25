@@ -39,7 +39,7 @@ BATCH_PLAN.md
 BACKEND.md
 AGENT.md
 
-# Supabase migration files (init.sql is the single source of truth)
+# Legacy Supabase files (init.sql is the single source of truth)
 supabase/functions.sql
 supabase/rls.sql
 supabase/seed.sql
