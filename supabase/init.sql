@@ -216,6 +216,8 @@ CREATE TABLE public.orders (
   address_id INTEGER REFERENCES public.addresses(id),
   address_snapshot JSONB,
   notes TEXT,
+  payment_proof TEXT,
+  item_notes JSONB DEFAULT '{}',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -249,7 +251,8 @@ CREATE TABLE public.reviews (
   rating INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),
   comment TEXT,
   images JSONB DEFAULT '[]',
-  is_approved BOOLEAN DEFAULT false,
+  status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
+  admin_reply TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -320,7 +323,31 @@ CREATE TABLE public.store_settings (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 1.15 notifications
+-- 1.15 admin_invitations
+CREATE TABLE public.admin_invitations (
+  id SERIAL PRIMARY KEY,
+  email TEXT NOT NULL,
+  role TEXT NOT NULL DEFAULT 'admin' CHECK (role IN ('admin', 'super_admin')),
+  token TEXT UNIQUE NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'accepted', 'expired')),
+  invited_by UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  expires_at TIMESTAMPTZ DEFAULT (NOW() + INTERVAL '7 days')
+);
+
+-- 1.16 product_qna
+CREATE TABLE public.product_qna (
+  id SERIAL PRIMARY KEY,
+  product_id INTEGER REFERENCES public.products(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE,
+  question TEXT NOT NULL,
+  answer TEXT,
+  is_answered BOOLEAN DEFAULT false,
+  helpful_count INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 1.17 notifications
 CREATE TABLE public.notifications (
   id SERIAL PRIMARY KEY,
   user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE,
@@ -356,6 +383,9 @@ CREATE INDEX idx_notifications_user ON public.notifications(user_id);
 CREATE INDEX idx_vouchers_code ON public.vouchers(code);
 CREATE INDEX idx_vouchers_active ON public.vouchers(is_active, valid_until);
 CREATE INDEX idx_flash_sales_active ON public.flash_sales(is_active, starts_at, ends_at);
+CREATE INDEX idx_admin_invitations_email ON public.admin_invitations(email);
+CREATE INDEX idx_admin_invitations_status ON public.admin_invitations(status);
+CREATE INDEX idx_product_qna_product ON public.product_qna(product_id);
 
 -- ============================================================
 -- PART 2: CREATE FUNCTIONS
@@ -736,7 +766,7 @@ BEGIN
   SET rating = (
     SELECT ROUND(AVG(rating)::NUMERIC, 1)
     FROM public.reviews
-    WHERE product_id = NEW.product_id AND is_approved = true
+    WHERE product_id = NEW.product_id AND status = 'approved'
   )
   WHERE id = NEW.product_id;
   RETURN NEW;
@@ -1058,6 +1088,9 @@ ALTER TABLE public.flash_sale_items ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.store_settings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.notifications ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.product_variants ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.admin_invitations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.product_qna ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.newsletter_subscribers ENABLE ROW LEVEL SECURITY;
 
 -- profiles
 CREATE POLICY "Profiles are viewable by everyone" ON public.profiles FOR SELECT USING (true);
@@ -1106,8 +1139,11 @@ CREATE POLICY "Users can add to their own wishlist" ON public.wishlists FOR INSE
 CREATE POLICY "Users can remove from their own wishlist" ON public.wishlists FOR DELETE USING (auth.uid() = user_id);
 
 -- reviews
-CREATE POLICY "Reviews are viewable by everyone" ON public.reviews FOR SELECT USING (is_approved = true);
+CREATE POLICY "Approved reviews are viewable by everyone" ON public.reviews FOR SELECT USING (status = 'approved');
 CREATE POLICY "Admins can view all reviews" ON public.reviews FOR SELECT USING (EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('admin', 'super_admin')));
+CREATE POLICY "Users can view own reviews" ON public.reviews FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Authenticated users can insert reviews" ON public.reviews FOR INSERT TO authenticated WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can update own reviews" ON public.reviews FOR UPDATE USING (auth.uid() = user_id);
 CREATE POLICY "Users can create reviews for their own orders" ON public.reviews FOR INSERT WITH CHECK (auth.uid() = user_id AND EXISTS (SELECT 1 FROM public.orders o JOIN public.order_items oi ON oi.order_id = o.id WHERE o.user_id = auth.uid() AND oi.product_id = reviews.product_id AND o.status = 'delivered'));
 CREATE POLICY "Users can update their own reviews" ON public.reviews FOR UPDATE USING (auth.uid() = user_id);
 CREATE POLICY "Users can delete their own reviews" ON public.reviews FOR DELETE USING (auth.uid() = user_id);
@@ -1137,8 +1173,18 @@ CREATE POLICY "System can insert notifications" ON public.notifications FOR INSE
 CREATE POLICY "Product variants are viewable by everyone" ON public.product_variants FOR SELECT USING (true);
 CREATE POLICY "Only admins can manage variants" ON public.product_variants FOR ALL USING (EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('admin', 'super_admin')));
 
+-- admin_invitations
+CREATE POLICY "Admins can view invitations" ON public.admin_invitations FOR SELECT USING (EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('admin', 'super_admin')));
+CREATE POLICY "Admins can create invitations" ON public.admin_invitations FOR INSERT WITH CHECK (EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('admin', 'super_admin')));
+CREATE POLICY "Admins can update invitations" ON public.admin_invitations FOR UPDATE USING (EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('admin', 'super_admin')));
+
+-- product_qna
+CREATE POLICY "Product Q&A is viewable by everyone" ON public.product_qna FOR SELECT USING (true);
+CREATE POLICY "Authenticated users can ask questions" ON public.product_qna FOR INSERT TO authenticated WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can update their own questions" ON public.product_qna FOR UPDATE USING (auth.uid() = user_id);
+CREATE POLICY "Admins can answer questions" ON public.product_qna FOR UPDATE USING (EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('admin', 'super_admin')));
+
 -- newsletter_subscribers
-ALTER TABLE public.newsletter_subscribers ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Newsletter subscribers are viewable by admins" ON public.newsletter_subscribers FOR SELECT USING (EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('admin', 'super_admin')));
 CREATE POLICY "Anyone can insert newsletter subscribers" ON public.newsletter_subscribers FOR INSERT WITH CHECK (true);
 
