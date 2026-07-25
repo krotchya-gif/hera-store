@@ -113,7 +113,7 @@ export default function CategoryManagement() {
     <>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3">
         <div>
-          <h2 className="text-xl font-bold">Manajemen Kategori</h2>
+
           <span className="text-sm text-gray-500">Kelola kategori produk</span>
         </div>
         <button 

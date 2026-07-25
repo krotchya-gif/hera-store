@@ -96,7 +96,6 @@ export default function ProductManagement() {
     <>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3">
         <div>
-          <h2 className="text-lg lg:text-xl font-bold">Manajemen Produk</h2>
           <span className="text-sm text-gray-500">{totalCount} Produk</span>
         </div>
         <div className="flex gap-2 w-full sm:w-auto">
