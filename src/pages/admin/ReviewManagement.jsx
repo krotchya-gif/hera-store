@@ -106,7 +106,7 @@ export default function ReviewManagement() {
     <>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3">
         <div>
-
+          <h2 className="text-xl font-bold">Manajemen Ulasan</h2>
           <span className="text-sm text-gray-500">Kelola ulasan produk</span>
         </div>
       </div>

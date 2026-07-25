@@ -69,9 +69,6 @@ export default function AdminLayout({ activeMenu, setActiveMenu, setCurrentPage,
           </button>
           <div className="flex items-center gap-2">
             <Leaf className="w-5 h-5 text-[#16A34A]" />
-            <span className="font-semibold text-gray-800 text-sm capitalize truncate max-w-[160px]">
-              {getMenuLabel(activeMenu)}
-            </span>
           </div>
           <NotificationBell dark={false} alignLeft />
         </header>
@@ -153,30 +150,6 @@ export default function AdminLayout({ activeMenu, setActiveMenu, setCurrentPage,
 
       {/* Main Content */}
       <div className="flex-1 min-w-0">
-        {/* Header */}
-        <header className="bg-white shadow-sm px-4 lg:px-6 py-4 hidden lg:flex items-center justify-between sticky top-0 z-30">
-          <div className="flex items-center gap-3">
-            <button
-              className="lg:hidden p-2 hover:bg-gray-100 rounded-lg"
-              onClick={() => setSidebarOpen(true)}
-            >
-              <Menu className="w-5 h-5 text-gray-600" />
-            </button>
-            <div>
-              <h1 className="text-lg lg:text-xl font-bold text-gray-800 capitalize">
-                {getMenuLabel(activeMenu)}
-              </h1>
-              <p className="text-xs lg:text-sm text-gray-500">Hera Store Admin</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            {!isMobile && <NotificationBell />}
-            <div className="w-9 h-9 rounded-full bg-[#16A34A] text-white flex items-center justify-center font-bold text-sm">
-              {profile?.full_name?.charAt(0)?.toUpperCase() || 'A'}
-            </div>
-          </div>
-        </header>
-
         {/* Page Content */}
         <div className={`${isMobile ? 'pt-14 px-4 pb-4' : 'p-4'} lg:p-6`}>
           {children}

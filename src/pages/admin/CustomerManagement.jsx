@@ -59,7 +59,7 @@ export default function CustomerManagement() {
     <>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3">
         <div>
-
+          <h2 className="text-xl font-bold">Manajemen Pelanggan</h2>
           <span className="text-sm text-gray-500">{customers.length} Pelanggan</span>
         </div>
         <button
@@ -169,8 +169,8 @@ export default function CustomerManagement() {
               </tbody>
             </table>
           </div>
-          <div className="p-4 flex flex-col sm:flex-row items-center justify-between border-t text-sm text-gray-500 gap-3">
-            <span>Showing {filteredCustomers.length} of {customers.length}</span>
+          <div className="px-4 py-3 flex items-center justify-between border-t text-xs text-gray-500">
+            <span>{customers.length} pelanggan</span>
           </div>
         </div>
       )}

@@ -96,6 +96,7 @@ export default function ProductManagement() {
     <>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3">
         <div>
+          <h2 className="text-lg lg:text-xl font-bold">Manajemen Produk</h2>
           <span className="text-sm text-gray-500">{totalCount} Produk</span>
         </div>
         <div className="flex gap-2 w-full sm:w-auto">
@@ -217,23 +218,23 @@ export default function ProductManagement() {
               </tbody>
             </table>
           </div>
-          <div className="p-4 flex flex-col sm:flex-row items-center justify-between border-t text-sm text-gray-500 gap-3">
-            <span>Showing {filteredProducts.length} of {totalCount}</span>
+          <div className="px-4 py-3 flex items-center justify-between border-t text-xs text-gray-500">
+            <span>{totalCount} produk</span>
             <div className="flex gap-1">
               <button
                 onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                 disabled={currentPage === 1}
-                className="px-3 py-1 border rounded hover:bg-gray-50 disabled:opacity-50"
+                className="px-2 py-1 border rounded hover:bg-gray-50 disabled:opacity-40"
               >
-                Previous
+                ‹
               </button>
-              <button className="px-3 py-1 bg-[#16A34A] text-white rounded">{currentPage}</button>
+              <span className="px-2 py-1 bg-[#16A34A] text-white rounded text-xs">{currentPage}</span>
               <button
                 onClick={() => setCurrentPage(currentPage + 1)}
                 disabled={filteredProducts.length < itemsPerPage}
-                className="px-3 py-1 border rounded hover:bg-gray-50 disabled:opacity-50"
+                className="px-2 py-1 border rounded hover:bg-gray-50 disabled:opacity-40"
               >
-                Next
+                ›
               </button>
             </div>
           </div>
