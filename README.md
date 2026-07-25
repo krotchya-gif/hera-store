@@ -99,63 +99,53 @@ npm run preview
 
 ```
 hera-store/
-├── public/                  # Static assets & PWA
-│   ├── manifest.json
-│   └── service-worker.js
+├── public/                  # Static assets & PWA icons
 ├── src/
-│   ├── App.jsx             # Root component + routing
-│   ├── main.jsx            # Entry point
+│   ├── App.jsx             # Root component + routing (BrowserRouter)
+│   ├── main.jsx            # Entry point (PWA via vite-plugin-pwa)
 │   ├── index.css           # Tailwind directives
-│   ├── components/         # Shared UI components
-│   │   ├── Navbar.jsx
-│   │   ├── SearchBar.jsx
-│   │   ├── LazyImage.jsx
-│   │   ├── NotificationBell.jsx
-│   │   ├── RouteGuard.jsx
+│   ├── components/         # Shared UI components (30+)
+│   │   ├── Navbar.jsx, SearchBar.jsx, LazyImage.jsx
+│   │   ├── LiveChatWidget.jsx  # FAQ bot / Tawk.to integration
 │   │   └── ...
 │   ├── pages/              # Page components
-│   │   ├── HomePage.jsx
-│   │   ├── ProductDetail.jsx
-│   │   ├── ProductListing.jsx
-│   │   ├── CartPage.jsx
-│   │   ├── CheckoutPage.jsx
-│   │   ├── ProfilePage.jsx
-│   │   ├── AuthPage.jsx
-│   │   └── admin/          # Admin panel pages
-│   │       ├── AdminLayout.jsx
-│   │       ├── DashboardOverview.jsx
-│   │       ├── ProductManagement.jsx
-│   │       └── ...
-│   ├── context/            # React contexts
-│   │   ├── AuthContext.jsx
-│   │   ├── ToastContext.jsx
-│   │   ├── WishlistContext.jsx
-│   │   └── ComparisonContext.jsx
+│   │   ├── HomePage.jsx    # Hero, categories, flash sale, best sellers
+│   │   ├── ProductDetail.jsx / ProductListing.jsx
+│   │   ├── CartPage.jsx / CheckoutPage.jsx  # 5-step checkout
+│   │   ├── ProfilePage.jsx / AuthPage.jsx
+│   │   └── admin/          # Admin panel (10 menu pages)
+│   │       ├── AdminLayout.jsx / AdminDashboard.jsx
+│   │       ├── DashboardOverview.jsx  # Stats, charts, recent orders
+│   │       ├── ProductManagement.jsx / OrderManagement.jsx
+│   │       ├── CustomerManagement.jsx / CategoryManagement.jsx
+│   │       ├── FinanceReport.jsx / PromoManagement.jsx
+│   │       ├── ReviewManagement.jsx / MarketingManagement.jsx
+│   │       └── StoreSettings.jsx  # Info, shipping, payment, live chat
+│   ├── context/            # React contexts (4)
+│   │   ├── AuthContext.jsx / ToastContext.jsx
+│   │   └── WishlistContext.jsx / ComparisonContext.jsx
 │   ├── lib/                # API & utilities
-│   │   ├── supabase.js     # Supabase client
-│   │   ├── api.js          # API functions (30+)
-│   │   ├── storage.js      # File upload helpers
-│   │   └── shipping.js     # Mock shipping calculator
-│   ├── hooks/              # Custom hooks
-│   ├── utils/              # Formatters, validators
-│   └── services/           # Realtime subscriptions
+│   │   ├── supabase.js     # Supabase client + realtime helpers
+│   │   ├── api.js          # 50+ API functions (products, orders, etc.)
+│   │   ├── storage.js      # File upload helpers (4 buckets)
+│   │   ├── shipping.js     # Mock shipping calculator (RajaOngkir-style)
+│   │   └── midtrans.js     # Midtrans Snap payment integration
+│   ├── hooks/              # Custom hooks (useScrollToTop, useFocusTrap)
+│   ├── utils/              # Formatters (rupiah, date), validators, CSV export
+│   └── services/           # Realtime subscriptions (orders, cart, notifications)
 ├── supabase/               # Database SQL files
-│   ├── init.sql            # All-in-one database init
-│   ├── functions.sql       # RPC functions
-│   ├── rls.sql             # Row Level Security
-│   ├── seed.sql            # Seed data
-│   ├── storage.sql         # Storage buckets
-│   ├── schema.sql          # Table schemas
-│   └── migration_*.sql     # Incremental migrations
+│   ├── init.sql            # All-in-one database init (18 tables)
+│   ├── functions.sql       # Legacy — only init.sql is source of truth
+│   └── migration_*.sql     # Local doc — individual migration files
 ├── .env.example            # Environment template
-└── package.json
+└── package.json            # React 18, Vite 5, Tailwind 3, Supabase 2
 ```
 
 ---
 
 ## 🗄️ Database
 
-16 tabel dengan Row Level Security, 13 RPC functions, dan 5 realtime notification triggers:
+18 tabel dengan Row Level Security, 15+ RPC functions, realtime notification triggers:
 
 - `profiles` — Extended user profiles (extends auth.users)
 - `categories` — Product categories (tree with parent_id)
@@ -166,12 +156,14 @@ hera-store/
 - `orders` — Orders with auto-generated ID (TJ-YYYYMMDD-XXXXX)
 - `order_items` — Order line items
 - `wishlists` — User wishlists
-- `reviews` — Product reviews & ratings
+- `reviews` — Product reviews & ratings (with status: pending/approved/rejected)
 - `vouchers` — Discount coupons
 - `flash_sales` — Flash sale events
 - `flash_sale_items` — Flash sale products
+- `admin_invitations` — Admin invitation management
+- `product_qna` — Product Q&A
 - `notifications` — Real-time notifications
-- `store_settings` — Store configuration
+- `store_settings` — Store configuration (includes live_chat_script)
 - `newsletter_subscribers` — Email subscribers
 
 ---
