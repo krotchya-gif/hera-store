@@ -178,7 +178,7 @@ export default function ReviewManagement() {
                     <tr key={review.id} className="border-b hover:bg-gray-50">
                       <td className="p-4">
                         <div className="flex items-center gap-3">
-                          <img src={review.product?.thumbnail} alt="" className="w-10 h-10 rounded-lg object-contain bg-gray-50" />
+                          <img src={review.product?.thumbnail} alt={review.product?.name || "Thumbnail Produk"} className="w-10 h-10 rounded-lg object-contain bg-gray-50" />
                           <span className="font-medium text-sm">{review.product?.name}</span>
                         </div>
                       </td>

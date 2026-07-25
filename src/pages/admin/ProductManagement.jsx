@@ -171,7 +171,7 @@ export default function ProductManagement() {
                       <td className="p-4"><input type="checkbox" className="accent-[#16A34A]" /></td>
                       <td className="p-4">
                         <div className="flex items-center gap-3">
-                          <img src={p.thumbnail} alt="" className="w-12 h-12 rounded-lg object-contain bg-gray-50 flex-shrink-0" />
+                          <img src={p.thumbnail} alt={p.name || "Thumbnail Produk"} className="w-12 h-12 rounded-lg object-contain bg-gray-50 flex-shrink-0" />
                           <div className="min-w-0">
                             <p className="font-medium truncate">{p.name}</p>
                             <p className="text-xs text-gray-400">SKU: {p.sku || `TRG-${p.id.toString().padStart(4, '0')}`}</p>

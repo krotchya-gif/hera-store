@@ -10,6 +10,7 @@ import { getProducts, getProductsCount, getCategories } from '../lib/api';
 import { formatRupiah } from '../utils/formatters';
 import LazyImage from '../components/LazyImage';
 import { ProductGridSkeleton, EmptyState } from '../components/Skeleton';
+import { Helmet } from 'react-helmet-async';
 
 const ProductListing = ({
   setCurrentPage,
@@ -130,6 +131,11 @@ const ProductListing = ({
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">
+      <Helmet>
+        <title>{`${activeCategoryName} | Hera Store`}</title>
+        <meta name="description" content={`Cari dan temukan produk terbaik di kategori ${activeCategoryName} dengan harga murah dan kualitas premium di Hera Store.`} />
+        <meta name="keywords" content={`produk ${activeCategoryName}, beli ${activeCategoryName}, online shop`} />
+      </Helmet>
       {/* Breadcrumb */}
       <div className="text-sm text-gray-500 mb-4">
         <span className="cursor-pointer hover:text-[#16A34A]" onClick={() => setCurrentPage('home')}>Beranda</span>

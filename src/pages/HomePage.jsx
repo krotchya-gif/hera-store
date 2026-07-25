@@ -13,7 +13,9 @@ import QuickViewModal from '../components/QuickViewModal';
 import RecentViews, { addToRecentViews } from '../components/RecentViews';
 import { ProductGridSkeleton } from '../components/Skeleton';
 
-const heroImage = "https://images.unsplash.com/photo-1584305574647-0cc949a2bb9f?auto=format&fit=crop&w=600&q=80";
+import { Helmet } from 'react-helmet-async';
+
+const heroImage = "https://images.unsplash.com/photo-1544457070-4cd773b4d71e?auto=format&fit=crop&w=600&q=80";
 
 const HomePage = ({ setCurrentPage, setSelectedProduct, addToCart, setSelectedCategory }) => {
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
@@ -82,6 +84,11 @@ const HomePage = ({ setCurrentPage, setSelectedProduct, addToCart, setSelectedCa
 
   return (
     <div>
+      <Helmet>
+        <title>Hera Store — Solusi Produk Rumah Tangga Premium</title>
+        <meta name="description" content="Temukan berbagai produk rumah tangga berkualitas tinggi dengan harga terbaik dan terjangkau di Hera Store." />
+        <meta name="keywords" content="produk rumah tangga, marketplace premium, online shop, harian rumah tangga" />
+      </Helmet>
       {/* Hero Banner — redesigned */}
       <div className="relative bg-gradient-to-br from-[#16A34A] via-[#15803D] to-[#166534] min-h-[420px] md:min-h-[480px] px-4 overflow-hidden">
         {/* Decorative background elements */}

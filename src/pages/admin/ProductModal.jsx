@@ -210,7 +210,7 @@ export default function ProductModal({ product, onClose, onSuccess }) {
                   className={`w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#16A34A] outline-none ${
                     errors.name ? 'border-red-300' : 'border-gray-200'
                   }`}
-                  placeholder="Sabun Cair Triguna"
+                  placeholder="Sabun Cair Hera"
                 />
                 {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
               </div>

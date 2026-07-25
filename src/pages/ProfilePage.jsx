@@ -393,7 +393,7 @@ export default function ProfilePage({ setCurrentPage, addToCart }) {
               />
               <div className="w-16 h-16 bg-[#16A34A] rounded-full flex items-center justify-center text-white text-2xl font-bold overflow-hidden">
                 {profile?.avatar ? (
-                  <img src={profile.avatar} alt="" className="w-full h-full object-cover rounded-full" />
+                  <img src={profile.avatar} alt="Avatar Pengguna" className="w-full h-full object-cover rounded-full" />
                 ) : (
                   profile?.full_name?.charAt(0)?.toUpperCase() || 'U'
                 )}
@@ -534,7 +534,7 @@ export default function ProfilePage({ setCurrentPage, addToCart }) {
                       </div>
                       {orderItems.length > 0 ? orderItems.map((item) => (
                         <div key={item.id} className="flex items-center gap-2 sm:gap-3 mb-3">
-                          <LazyImage src={item.products?.thumbnail || item.thumbnail || ''} alt="" className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg object-contain bg-gray-50 flex-shrink-0" />
+                          <LazyImage src={item.products?.thumbnail || item.thumbnail || ''} alt={item.products?.name || item.name || 'Produk'} className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg object-contain bg-gray-50 flex-shrink-0" />
                           <div className="flex-1 min-w-0">
                             <p className="font-medium text-xs sm:text-sm truncate">{item.products?.name || item.name || 'Produk'}</p>
                             <p className="text-xs text-gray-500">x{item.quantity || item.qty || 1}</p>
@@ -981,7 +981,7 @@ export default function ProfilePage({ setCurrentPage, addToCart }) {
                   {myReviews.map((review) => (
                     <div key={review.id} className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
                       <div className="flex gap-3 items-center mb-3">
-                        <img src={review.products?.thumbnail} alt="" className="w-10 h-10 rounded-lg object-contain bg-gray-50" />
+                        <img src={review.products?.thumbnail} alt={review.products?.name || "Thumbnail Produk"} className="w-10 h-10 rounded-lg object-contain bg-gray-50" />
                         <div>
                           <p className="font-semibold text-sm">{review.products?.name}</p>
                           <div className="flex items-center gap-1 mt-0.5">

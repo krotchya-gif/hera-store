@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { HashRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Leaf, ShoppingCart, User, Package, BarChart3, LogOut, X, Copy
@@ -16,17 +16,7 @@ import CheckoutPage from './pages/CheckoutPage';
 // Lazy Loaded Pages
 const AuthPage = lazy(() => import('./pages/AuthPage'));
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
-const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'));
-const DashboardOverview = lazy(() => import('./pages/admin/DashboardOverview'));
-const ProductManagement = lazy(() => import('./pages/admin/ProductManagement'));
-const OrderManagement = lazy(() => import('./pages/admin/OrderManagement'));
-const CustomerManagement = lazy(() => import('./pages/admin/CustomerManagement'));
-const FinanceReport = lazy(() => import('./pages/admin/FinanceReport'));
-const PromoManagement = lazy(() => import('./pages/admin/PromoManagement'));
-const StoreSettings = lazy(() => import('./pages/admin/StoreSettings'));
-const CategoryManagement = lazy(() => import('./pages/admin/CategoryManagement'));
-const MarketingManagement = lazy(() => import('./pages/admin/MarketingManagement'));
-const ReviewManagement = lazy(() => import('./pages/admin/ReviewManagement'));
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
 const SearchResultsPage = lazy(() => import('./components/SearchResultsPage'));
 const WishlistPage = lazy(() => import('./components/WishlistPage'));
 const NewProductsPage = lazy(() => import('./components/NewProductsPage'));
@@ -71,50 +61,6 @@ const FontStyles = () => (
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   `}</style>
 );
-
-// Admin Dashboard Page
-const AdminDashboard = ({ setCurrentPage }) => {
-  const [activeMenu, setActiveMenu] = useState('dashboard');
-
-  const renderContent = () => {
-    switch (activeMenu) {
-      case 'dashboard':
-        return <DashboardOverview />;
-      case 'products':
-        return <ProductManagement />;
-      case 'orders':
-        return <OrderManagement />;
-      case 'customers':
-        return <CustomerManagement />;
-      case 'categories':
-        return <CategoryManagement />;
-      case 'finance':
-        return <FinanceReport />;
-      case 'promo':
-        return <PromoManagement />;
-      case 'reviews':
-        return <ReviewManagement />;
-      case 'marketing':
-        return <MarketingManagement />;
-      case 'settings':
-        return <StoreSettings />;
-      default:
-        return <DashboardOverview />;
-    }
-  };
-
-  return (
-    <Suspense fallback={
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#16A34A]" />
-      </div>
-    }>
-      <AdminLayout activeMenu={activeMenu} setActiveMenu={setActiveMenu} setCurrentPage={setCurrentPage}>
-        {renderContent()}
-      </AdminLayout>
-    </Suspense>
-  );
-};
 
 // Main App Layout & Routing Bridge
 function AppContent() {
@@ -518,18 +464,22 @@ function AppContent() {
   );
 }
 
+import { HelmetProvider } from 'react-helmet-async';
+
 export default function App() {
   return (
-    <Router>
-      <ToastProvider>
-        <AuthProvider>
-          <WishlistProvider>
-            <ComparisonProvider>
-              <AppContent />
-            </ComparisonProvider>
-          </WishlistProvider>
-        </AuthProvider>
-      </ToastProvider>
-    </Router>
+    <HelmetProvider>
+      <Router>
+        <ToastProvider>
+          <AuthProvider>
+            <WishlistProvider>
+              <ComparisonProvider>
+                <AppContent />
+              </ComparisonProvider>
+            </WishlistProvider>
+          </AuthProvider>
+        </ToastProvider>
+      </Router>
+    </HelmetProvider>
   );
 }

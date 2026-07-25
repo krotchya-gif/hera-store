@@ -290,7 +290,7 @@ export default function OrderManagement() {
                 <h4 className="font-medium text-sm text-gray-500 mb-2">Produk</h4>
                 {selectedOrder.order_items?.map((item, idx) => (
                   <div key={idx} className="flex items-center gap-3 mb-2">
-                    <img src={item.products?.thumbnail} alt="" className="w-10 h-10 rounded object-contain bg-gray-50" />
+                    <img src={item.products?.thumbnail} alt={item.products?.name || "Thumbnail Produk"} className="w-10 h-10 rounded object-contain bg-gray-50" />
                     <div className="flex-1">
                       <p className="text-sm">{item.products?.name || item.name}</p>
                       <p className="text-xs text-gray-500">x{item.qty} • {formatRupiah(item.price)}</p>

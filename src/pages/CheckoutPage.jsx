@@ -13,6 +13,7 @@ import {
 import { uploadPaymentProof } from '../lib/storage';
 import { getShippingRates } from '../lib/shipping';
 import { formatRupiah } from '../utils/formatters';
+import { isMidtransAvailable, createMidtransTransaction, payWithMidtrans } from '../lib/midtrans';
 import AddressModal from './admin/AddressModal';
 
 const CheckoutPage = ({
@@ -43,10 +44,11 @@ const CheckoutPage = ({
   const [checkoutVoucher, setCheckoutVoucher] = useState(appliedVoucher);
   const [availableVouchers, setAvailableVouchers] = useState([]);
   const [itemNotes, setItemNotes] = useState({});
+  const [midtransProcessing, setMidtransProcessing] = useState(false);
 
   const steps = ['Alamat', 'Pengiriman', 'Pembayaran', 'Konfirmasi', 'Selesai'];
   const freeShippingThreshold = 100000;
-  const paymentMethods = ['Transfer Bank', 'E-Wallet', 'Virtual Account', 'COD (Bayar di Tempat)', 'Kartu Kredit/Debit'];
+  const paymentMethods = ['Transfer Bank', 'E-Wallet', 'Virtual Account', 'COD (Bayar di Tempat)', 'Midtrans (Kartu/QR/Online)'];
 
   const originCity = 'Jakarta';
 
@@ -156,6 +158,7 @@ const CheckoutPage = ({
         }
       }
 
+      const isMidtrans = selectedPayment === 4;
       const selectedAddr = addresses[selectedAddress];
       const orderData = {
         user_id: user.id,
@@ -184,6 +187,56 @@ const CheckoutPage = ({
 
       const order = await createOrder(orderData, items, cartItemIds);
       setOrderId(order.id);
+
+      // Handle Midtrans Snap payment
+      if (isMidtrans) {
+        if (!isMidtransAvailable()) {
+          addToast('Midtrans belum dikonfigurasi. Hubungi admin.', 'error');
+          setLoading(false);
+          return;
+        }
+        setMidtransProcessing(true);
+        setLoading(false);
+        try {
+          const snapResult = await createMidtransTransaction(
+            order.id,
+            total,
+            {
+              first_name: selectedAddr?.recipient_name || user.email,
+              email: user.email,
+              phone: selectedAddr?.phone || '',
+              billing: {
+                address: selectedAddr?.address,
+                city: selectedAddr?.city,
+              },
+            }
+          );
+
+          if (!snapResult.token) {
+            addToast('Gagal mendapatkan token pembayaran', 'error');
+            setMidtransProcessing(false);
+            return;
+          }
+
+          const paymentResult = await payWithMidtrans(snapResult.token);
+          setMidtransProcessing(false);
+
+          if (paymentResult.status === 'success') {
+            await updateOrderPaymentProof(order.id, paymentResult.transactionId);
+            addToast('Pembayaran berhasil!', 'success');
+          } else if (paymentResult.status === 'pending') {
+            addToast('Pembayaran sedang diproses', 'info');
+          } else if (paymentResult.status === 'close') {
+            addToast('Pembayaran dibatalkan', 'warning');
+          } else {
+            addToast(`Pembayaran gagal: ${paymentResult.message}`, 'error');
+          }
+        } catch (midErr) {
+          setMidtransProcessing(false);
+          console.error('Midtrans error:', midErr);
+          addToast('Gagal memproses pembayaran Midtrans', 'error');
+        }
+      }
 
       // Upload payment proof if provided (transfer bank only)
       if (proofFile && paymentMethods[selectedPayment] === 'Transfer Bank') {
@@ -361,6 +414,13 @@ const CheckoutPage = ({
                   <p className="mt-2 text-xs">Upload bukti transfer setelah melakukan pembayaran</p>
                 </div>
               )}
+              {selectedPayment === 4 && (
+                <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 text-sm text-purple-800">
+                  <p className="font-medium mb-1">💳 Midtrans Snap</p>
+                  <p>Pembayaran akan diproses melalui Midtrans — Kartu Kredit, QRIS, dan berbagai e-wallet tersedia.</p>
+                  <p className="text-xs mt-1">Setelah konfirmasi, popup pembayaran akan terbuka secara otomatis.</p>
+                </div>
+              )}
             </div>
           )}
 
@@ -373,7 +433,7 @@ const CheckoutPage = ({
                   {cart.map((item) => (
                     <div key={item.id} className="py-3 border-b">
                       <div className="flex items-center gap-3 mb-2">
-                        <img src={item.thumbnail} alt="" className="w-12 h-12 rounded-lg object-contain bg-gray-50" />
+                        <img src={item.thumbnail} alt={item.name || "Thumbnail Produk"} className="w-12 h-12 rounded-lg object-contain bg-gray-50" />
                         <div className="flex-1">
                           <p className="text-sm font-medium">{item.name}</p>
                           <p className="text-xs text-gray-500">{item.variant || '-'} x{item.qty}</p>
@@ -541,10 +601,10 @@ const CheckoutPage = ({
                     setStep(step + 1);
                   }
                 }}
-                disabled={loading || proofUploading}
+                disabled={loading || proofUploading || midtransProcessing}
                 className="flex-1 bg-[#16A34A] text-white py-3 rounded-lg font-semibold hover:bg-[#15803D] disabled:opacity-50"
               >
-                {loading || proofUploading ? 'Memproses...' : step === 4 ? 'Buat Pesanan →' : 'Lanjutkan →'}
+                {midtransProcessing ? 'Memproses Pembayaran...' : loading || proofUploading ? 'Memproses...' : step === 4 ? 'Buat Pesanan →' : 'Lanjutkan →'}
               </button>
             </div>
           )}

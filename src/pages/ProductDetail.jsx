@@ -11,6 +11,7 @@ import { formatRupiah } from '../utils/formatters';
 import ProductQnA from '../components/ProductQnA';
 import ShareButton from '../components/ShareButton';
 import RecommendedProducts from '../components/RecommendedProducts';
+import { Helmet } from 'react-helmet-async';
 
 const ProductDetail = ({
   product,
@@ -129,6 +130,11 @@ const ProductDetail = ({
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">
+      <Helmet>
+        <title>{`${p.name} | Hera Store`}</title>
+        <meta name="description" content={p.description ? p.description.substring(0, 150) : `Beli ${p.name} dengan kualitas terbaik dan harga terjangkau hanya di Hera Store.`} />
+        <meta name="keywords" content={`${p.name}, produk rumah tangga, hera store`} />
+      </Helmet>
       <div className="text-sm text-gray-500 mb-4">
         <span className="cursor-pointer hover:text-[#16A34A]" onClick={() => setCurrentPage('home')}>Beranda</span>
         <span className="mx-2">&gt;</span>
@@ -197,7 +203,7 @@ const ProductDetail = ({
                 onClick={() => setSelectedImage(idx)}
                 className={`w-20 h-20 rounded-lg border-2 overflow-hidden ${selectedImage === idx ? 'border-[#16A34A]' : 'border-gray-200'}`}
               >
-                <img src={img} alt="" className="w-full h-full object-contain p-2" />
+                <img src={img} alt={`Galeri ${product?.name || 'Produk'}`} className="w-full h-full object-contain p-2" />
               </button>
             ))}
           </div>
@@ -277,9 +283,9 @@ const ProductDetail = ({
 
           <div className="border-t pt-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center font-bold text-gray-600">T</div>
+              <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center font-bold text-gray-600">H</div>
               <div>
-                <p className="font-medium text-sm">Triguna Official Store</p>
+                <p className="font-medium text-sm">Hera Store</p>
                 <div className="flex items-center gap-1">
                   <Star className="w-3 h-3 text-[#FBBF24] fill-[#FBBF24]" />
                   <span className="text-xs text-gray-500">4.9 | 12K Produk</span>
@@ -374,7 +380,7 @@ const ProductDetail = ({
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-8 h-8 bg-[#16A34A] text-white rounded-full flex items-center justify-center text-xs font-bold">
                       {r.profiles?.avatar ? (
-                        <img src={r.profiles.avatar} alt="" className="w-full h-full rounded-full object-cover" />
+                        <img src={r.profiles.avatar} alt={r.profiles.full_name || 'Pengguna'} className="w-full h-full rounded-full object-cover" />
                       ) : (
                         r.profiles?.full_name?.charAt(0)?.toUpperCase() || 'U'
                       )}
