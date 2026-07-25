@@ -86,14 +86,14 @@ export default function CustomerManagement() {
       {loading ? (
         <div className="bg-white rounded-xl shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm min-w-[700px]">
+            <table className="w-full text-sm min-w-[500px]">
               <thead className="bg-gray-50">
                 <tr className="text-left text-gray-600">
-                  <th className="p-4">Pelanggan</th>
-                  <th className="p-4">Kontak</th>
-                  <th className="p-4">Role</th>
-                  <th className="p-4">Bergabung</th>
-                  <th className="p-4">Aksi</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Pelanggan</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Kontak</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Role</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Bergabung</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -109,14 +109,14 @@ export default function CustomerManagement() {
       ) : (
         <div className="bg-white rounded-xl shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm min-w-[700px]">
+            <table className="w-full text-sm min-w-[500px]">
               <thead className="bg-gray-50">
                 <tr className="text-left text-gray-600">
-                  <th className="p-4">Pelanggan</th>
-                  <th className="p-4">Kontak</th>
-                  <th className="p-4">Role</th>
-                  <th className="p-4">Bergabung</th>
-                  <th className="p-4">Aksi</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Pelanggan</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Kontak</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Role</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Bergabung</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Aksi</th>
                 </tr>
               </thead>
               <tbody>

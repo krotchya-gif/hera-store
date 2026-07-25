@@ -140,14 +140,14 @@ export default function CategoryManagement() {
       {loading ? (
         <div className="bg-white rounded-xl shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm min-w-[600px]">
+            <table className="w-full text-sm min-w-[500px]">
               <thead className="bg-gray-50">
                 <tr className="text-left text-gray-600">
-                  <th className="p-4">Kategori</th>
-                  <th className="p-4">Deskripsi</th>
-                  <th className="p-4">Produk</th>
-                  <th className="p-4">Status</th>
-                  <th className="p-4">Aksi</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Kategori</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Deskripsi</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Produk</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Status</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -161,32 +161,32 @@ export default function CategoryManagement() {
       ) : (
         <div className="bg-white rounded-xl shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm min-w-[600px]">
+            <table className="w-full text-sm min-w-[500px]">
               <thead className="bg-gray-50">
                 <tr className="text-left text-gray-600">
-                  <th className="p-4">Kategori</th>
-                  <th className="p-4">Deskripsi</th>
-                  <th className="p-4">Produk</th>
-                  <th className="p-4">Status</th>
-                  <th className="p-4">Aksi</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Kategori</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Deskripsi</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Produk</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Status</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 {categoryTree.length > 0 ? (
                   categoryTree.map((category) => (
                     <tr key={category.id} className="border-b hover:bg-gray-50">
-                      <td className="p-4">
+                      <td className="p-3 lg:p-4">
                         <div className="flex items-center gap-3" style={{ paddingLeft: `${(category.depth || 0) * 24}px` }}>
                           <span className="text-2xl">{category.icon || '📦'}</span>
                           <div>
-                            <span className="font-medium">{category.name}</span>
+                            <span className="font-medium text-sm">{category.name}</span>
                             {category.depth > 0 && <span className="text-xs text-gray-400 ml-2">sub-kategori</span>}
                           </div>
                         </div>
                       </td>
-                      <td className="p-4 text-gray-500">{category.description || '-'}</td>
-                      <td className="p-4">{category.product_count || 0} produk</td>
-                      <td className="p-4">
+                      <td className="p-3 lg:p-4 text-gray-500 text-sm max-w-[200px] truncate">{category.description || '-'}</td>
+                      <td className="p-3 lg:p-4 whitespace-nowrap text-sm">{category.product_count || 0} produk</td>
+                      <td className="p-3 lg:p-4">
                         <span className={`px-2 py-1 rounded-full text-xs ${category.is_active ? 'bg-[#DCFCE7] text-[#15803D]' : 'bg-gray-100 text-gray-500'}`}>
                           {category.is_active ? 'Aktif' : 'Nonaktif'}
                         </span>

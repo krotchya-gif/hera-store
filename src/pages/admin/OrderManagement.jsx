@@ -132,34 +132,34 @@ export default function OrderManagement() {
       ) : (
         <div className="bg-white rounded-xl shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm min-w-[800px]">
+            <table className="w-full text-sm min-w-[600px]">
               <thead className="bg-gray-50">
                 <tr className="text-left text-gray-600">
-                  <th className="p-4">No. Pesanan</th>
-                  <th className="p-4">Pelanggan</th>
-                  <th className="p-4">Produk</th>
-                  <th className="p-4">Total</th>
-                  <th className="p-4">Status</th>
-                  <th className="p-4">Tanggal</th>
-                  <th className="p-4">Aksi</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">No. Pesanan</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Pelanggan</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Produk</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Total</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Status</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Tanggal</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 {orders.length > 0 ? (
                   orders.map((order) => (
                     <tr key={order.id} className="border-b hover:bg-gray-50">
-                      <td className="p-4 font-mono font-medium">{order.id}</td>
-                      <td className="p-4">
+                      <td className="p-3 lg:p-4 font-mono font-medium whitespace-nowrap">{order.id}</td>
+                      <td className="p-3 lg:p-4 whitespace-nowrap">
                         <div>
-                          <p className="font-medium">{order.profiles?.full_name || '-'}</p>
+                          <p className="font-medium text-sm">{order.profiles?.full_name || '-'}</p>
                           <p className="text-xs text-gray-500">{order.profiles?.email || '-'}</p>
                         </div>
                       </td>
-                      <td className="p-4">
-                        <div className="space-y-1">
+                      <td className="p-3 lg:p-4">
+                        <div className="space-y-1 max-w-[120px] lg:max-w-[200px]">
                           {order.order_items?.slice(0, 2).map((item, idx) => (
-                            <p key={idx} className="text-xs text-gray-600">
-                              {item.products?.name || item.name} x{item.qty}
+                            <p key={idx} className="text-xs text-gray-600 truncate">
+                              {item.products?.name || item.name} x{item.qty || item.quantity}
                             </p>
                           )) || <p className="text-xs text-gray-500">-</p>}
                           {(order.order_items?.length || 0) > 2 && (
@@ -167,18 +167,18 @@ export default function OrderManagement() {
                           )}
                         </div>
                       </td>
-                      <td className="p-4 font-medium">{formatRupiah(order.total)}</td>
-                      <td className="p-4">
-                        <span className={`px-2 py-1 rounded-full text-xs ${statusColors[order.status] || 'bg-gray-100 text-gray-700'}`}>
+                      <td className="p-3 lg:p-4 font-medium whitespace-nowrap">{formatRupiah(order.total)}</td>
+                      <td className="p-3 lg:p-4 whitespace-nowrap">
+                        <span className={`px-2 py-1 rounded-full text-xs whitespace-nowrap ${statusColors[order.status] || 'bg-gray-100 text-gray-700'}`}>
                           {statusLabels[order.status] || order.status}
                         </span>
                       </td>
-                      <td className="p-4 text-gray-500">{formatDate(order.created_at)}</td>
-                      <td className="p-4">
-                        <div className="flex gap-2">
+                      <td className="p-3 lg:p-4 text-gray-500 whitespace-nowrap">{formatDate(order.created_at)}</td>
+                      <td className="p-3 lg:p-4 whitespace-nowrap">
+                        <div className="flex gap-1 lg:gap-2">
                           <button
                             onClick={() => setSelectedOrder(order)}
-                            className="p-1 hover:bg-gray-100 rounded"
+                            className="p-1.5 hover:bg-gray-100 rounded"
                             title="Detail"
                           >
                             <Eye className="w-4 h-4 text-gray-500" />
@@ -186,7 +186,7 @@ export default function OrderManagement() {
                           {order.status === 'processing' && (
                             <button
                               onClick={() => handleUpdateStatus(order.id, 'shipped')}
-                              className="p-1 hover:bg-gray-100 rounded"
+                              className="p-1.5 hover:bg-gray-100 rounded"
                               title="Kirim"
                             >
                               <Package className="w-4 h-4 text-blue-500" />

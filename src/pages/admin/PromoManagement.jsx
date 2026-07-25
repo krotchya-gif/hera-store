@@ -66,17 +66,17 @@ export default function PromoManagement() {
       {loading ? (
         <div className="bg-white rounded-xl shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm min-w-[700px]">
+            <table className="w-full text-sm min-w-[600px]">
               <thead className="bg-gray-50">
                 <tr className="text-left text-gray-600">
-                  <th className="p-4">Kode</th>
-                  <th className="p-4">Tipe</th>
-                  <th className="p-4">Nilai</th>
-                  <th className="p-4">Min. Belanja</th>
-                  <th className="p-4">Digunakan</th>
-                  <th className="p-4">Periode</th>
-                  <th className="p-4">Status</th>
-                  <th className="p-4">Aksi</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Kode</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Tipe</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Nilai</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Min. Belanja</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Digunakan</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Periode</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Status</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -92,17 +92,17 @@ export default function PromoManagement() {
       ) : activeTab === 'vouchers' ? (
         <div className="bg-white rounded-xl shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm min-w-[700px]">
+            <table className="w-full text-sm min-w-[600px]">
               <thead className="bg-gray-50">
                 <tr className="text-left text-gray-600">
-                  <th className="p-4">Kode</th>
-                  <th className="p-4">Tipe</th>
-                  <th className="p-4">Nilai</th>
-                  <th className="p-4">Min. Belanja</th>
-                  <th className="p-4">Digunakan</th>
-                  <th className="p-4">Periode</th>
-                  <th className="p-4">Status</th>
-                  <th className="p-4">Aksi</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Kode</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Tipe</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Nilai</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Min. Belanja</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Digunakan</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Periode</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Status</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Aksi</th>
                 </tr>
               </thead>
               <tbody>

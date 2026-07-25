@@ -137,16 +137,16 @@ export default function ReviewManagement() {
       {loading ? (
         <div className="bg-white rounded-xl shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm min-w-[700px]">
+            <table className="w-full text-sm min-w-[550px]">
               <thead className="bg-gray-50">
                 <tr className="text-left text-gray-600">
-                  <th className="p-4">Produk</th>
-                  <th className="p-4">Pelanggan</th>
-                  <th className="p-4">Rating</th>
-                  <th className="p-4">Ulasan</th>
-                  <th className="p-4">Tanggal</th>
-                  <th className="p-4">Status</th>
-                  <th className="p-4">Aksi</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Produk</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Pelanggan</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Rating</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Ulasan</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Tanggal</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Status</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -160,16 +160,16 @@ export default function ReviewManagement() {
       ) : (
         <div className="bg-white rounded-xl shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm min-w-[700px]">
+            <table className="w-full text-sm min-w-[550px]">
               <thead className="bg-gray-50">
                 <tr className="text-left text-gray-600">
-                  <th className="p-4">Produk</th>
-                  <th className="p-4">Pelanggan</th>
-                  <th className="p-4">Rating</th>
-                  <th className="p-4">Ulasan</th>
-                  <th className="p-4">Tanggal</th>
-                  <th className="p-4">Status</th>
-                  <th className="p-4">Aksi</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Produk</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Pelanggan</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Rating</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Ulasan</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Tanggal</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Status</th>
+                  <th className="p-3 lg:p-4 whitespace-nowrap">Aksi</th>
                 </tr>
               </thead>
               <tbody>

@@ -124,7 +124,7 @@ export default function DashboardOverview() {
         <div className="bg-white rounded-xl shadow-sm p-5">
           <div className="h-4 bg-gray-200 rounded w-32 mb-4 animate-pulse" />
           <div className="overflow-x-auto">
-            <table className="w-full text-sm min-w-[600px]">
+            <table className="w-full text-sm min-w-[500px]">
               <thead>
                 <tr className="border-b text-left text-gray-500">
                   <th className="py-3 pr-4">No. Pesanan</th>
@@ -214,7 +214,7 @@ export default function DashboardOverview() {
   return (
     <>
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {statCards.map((stat, idx) => {
           const Icon = stat.icon;
           return (
@@ -277,34 +277,34 @@ export default function DashboardOverview() {
             Lihat Semua <ArrowRight className="w-4 h-4" />
           </button>
         </div>
-        <div className="overflow-x-auto -mx-5 px-5">
-          <table className="w-full text-sm min-w-[600px]">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[500px]">
             <thead>
               <tr className="border-b text-left text-gray-500">
-                <th className="py-3 pr-4">No. Pesanan</th>
-                <th className="pr-4">Pelanggan</th>
-                <th className="pr-4">Produk</th>
-                <th className="pr-4">Total</th>
-                <th className="pr-4">Status</th>
-                <th className="pr-4">Tanggal</th>
-                <th>Aksi</th>
+                <th className="py-3 pr-4 whitespace-nowrap">No. Pesanan</th>
+                <th className="pr-4 whitespace-nowrap">Pelanggan</th>
+                <th className="pr-4 whitespace-nowrap">Produk</th>
+                <th className="pr-4 whitespace-nowrap">Total</th>
+                <th className="pr-4 whitespace-nowrap">Status</th>
+                <th className="pr-4 whitespace-nowrap">Tanggal</th>
+                <th className="whitespace-nowrap">Aksi</th>
               </tr>
             </thead>
             <tbody>
               {recentOrders.length > 0 ? (
                 recentOrders.map((order) => (
                   <tr key={order.id} className="border-b hover:bg-gray-50">
-                    <td className="py-3 font-mono font-medium">{order.id}</td>
-                    <td className="pr-4">{order.profiles?.full_name || '-'}</td>
-                    <td className="pr-4">{order.order_items?.map(i => i.products?.name).filter(Boolean).join(', ') || '-'}</td>
-                    <td className="font-medium pr-4">{formatRupiah(order.total)}</td>
-                    <td className="pr-4">
+                    <td className="py-3 pr-4 font-mono font-medium whitespace-nowrap">{order.id}</td>
+                    <td className="pr-4 whitespace-nowrap">{order.profiles?.full_name || '-'}</td>
+                    <td className="pr-4 max-w-[150px] truncate">{order.order_items?.map(i => i.products?.name).filter(Boolean).join(', ') || '-'}</td>
+                    <td className="pr-4 font-medium whitespace-nowrap">{formatRupiah(order.total)}</td>
+                    <td className="pr-4 whitespace-nowrap">
                       <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(order.status)}`}>
                         {getStatusLabel(order.status)}
                       </span>
                     </td>
-                    <td className="text-gray-500 pr-4">{new Date(order.created_at).toLocaleDateString('id-ID')}</td>
-                    <td><button className="text-[#16A34A] hover:underline">Detail</button></td>
+                    <td className="text-gray-500 pr-4 whitespace-nowrap">{new Date(order.created_at).toLocaleDateString('id-ID')}</td>
+                    <td className="whitespace-nowrap"><button className="text-[#16A34A] hover:underline">Detail</button></td>
                   </tr>
                 ))
               ) : (
