@@ -70,7 +70,7 @@ export default function AdminLayout({ activeMenu, setActiveMenu, setCurrentPage,
           <div className="flex items-center gap-2">
             <Leaf className="w-5 h-5 text-[#16A34A]" />
           </div>
-          <NotificationBell dark={false} alignLeft />
+          <NotificationBell dark={false} />
         </header>
       )}
 
