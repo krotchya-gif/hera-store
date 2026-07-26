@@ -62,39 +62,11 @@ const Navbar = ({
               <div className="bg-[#16A34A] p-2 rounded-lg">
                 <Leaf className="w-5 h-5 text-white" />
               </div>
-              <span className="hidden md:block text-xl font-bold text-[#16A34A]">Hera Store</span>
+              <span className="text-xl font-bold text-[#16A34A]">Hera Store</span>
             </div>
-          </div>
-
-          <div className="hidden md:flex flex-1 max-w-xl mx-8">
-            <SearchBar
-              onProductClick={(product) => {
-                setSelectedProduct(product);
-                setCurrentPage('detail');
-              }}
-              onSearch={(query) => {
-                setSearchQuery(query);
-                setCurrentPage('search');
-              }}
-              onClose={() => {}}
-            />
           </div>
 
           <div className="flex items-center gap-4">
-            {/* Mobile Search Button */}
-            <div className="md:hidden">
-              <SearchBar
-                onProductClick={(product) => {
-                  setSelectedProduct(product);
-                  setCurrentPage('detail');
-                }}
-                onSearch={(query) => {
-                  setSearchQuery(query);
-                  setCurrentPage('search');
-                }}
-                onClose={() => {}}
-              />
-            </div>
             <button
               onClick={() => setCurrentPage('wishlist')}
               className="relative hidden md:block p-2 hover:bg-gray-100 rounded-full"
@@ -163,6 +135,21 @@ const Navbar = ({
               )}
             </div>
           </div>
+        </div>
+
+        {/* Search Bar - full width row */}
+        <div className="pb-3">
+          <SearchBar
+            onProductClick={(product) => {
+              setSelectedProduct(product);
+              setCurrentPage('detail');
+            }}
+            onSearch={(query) => {
+              setSearchQuery(query);
+              setCurrentPage('search');
+            }}
+            onClose={() => {}}
+          />
         </div>
 
         {/* Sub Header Menu desktop */}

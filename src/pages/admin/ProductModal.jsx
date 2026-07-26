@@ -222,7 +222,7 @@ export default function ProductModal({ product, onClose, onSuccess }) {
                   value={formData.sku}
                   onChange={handleChange}
                   className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#16A34A] outline-none"
-                  placeholder="TRG-001"
+                  placeholder="HR-001"
                 />
               </div>
               <div>

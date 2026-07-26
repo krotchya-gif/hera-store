@@ -153,7 +153,7 @@ hera-store/
 - `product_variants` — Size/color variants
 - `addresses` — User shipping addresses
 - `cart_items` — Shopping cart
-- `orders` — Orders with auto-generated ID (TJ-YYYYMMDD-XXXXX)
+- `orders` — Orders with auto-generated ID (HS-YYYYMMDD-XXXXX)
 - `order_items` — Order line items
 - `wishlists` — User wishlists
 - `reviews` — Product reviews & ratings (with status: pending/approved/rejected)

@@ -201,7 +201,7 @@ CREATE SEQUENCE public.order_seq START 1;
 
 -- 1.8 orders
 CREATE TABLE public.orders (
-  id TEXT PRIMARY KEY DEFAULT 'TJ' || TO_CHAR(NOW(), 'YYYYMMDD') || LPAD(NEXTVAL('public.order_seq')::TEXT, 5, '0'),
+  id TEXT PRIMARY KEY DEFAULT 'HS' || TO_CHAR(NOW(), 'YYYYMMDD') || LPAD(NEXTVAL('public.order_seq')::TEXT, 5, '0'),
   user_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
   status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'paid', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded')),
   total INTEGER NOT NULL DEFAULT 0,
@@ -359,7 +359,7 @@ CREATE TABLE public.notifications (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 1.17 newsletter_subscribers
+-- 1.18 newsletter_subscribers
 CREATE TABLE public.newsletter_subscribers (
   id SERIAL PRIMARY KEY,
   email TEXT UNIQUE NOT NULL,
@@ -715,7 +715,7 @@ RETURNS TEXT
 SET search_path = ''
 AS $$
 BEGIN
-  RETURN 'TJ' || TO_CHAR(NOW(), 'YYYYMMDD') || LPAD(NEXTVAL('public.order_seq')::TEXT, 5, '0');
+  RETURN 'HS' || TO_CHAR(NOW(), 'YYYYMMDD') || LPAD(NEXTVAL('public.order_seq')::TEXT, 5, '0');
 END;
 $$ LANGUAGE plpgsql;
 
@@ -1026,7 +1026,7 @@ INSERT INTO public.product_variants (product_id, name, price, stock, sku) VALUES
 
 -- 4.4 vouchers
 INSERT INTO public.vouchers (code, type, value, min_order, max_discount, usage_limit, valid_from, valid_until) VALUES
-  ('TRIGUNA10', 'percentage', 10, 50000, 50000, 500, NOW(), NOW() + INTERVAL '30 days'),
+  ('HERA10', 'percentage', 10, 50000, 50000, 500, NOW(), NOW() + INTERVAL '30 days'),
   ('GRATIS5K', 'fixed', 5000, 30000, 5000, 100, NOW(), NOW() + INTERVAL '20 days'),
   ('NEWUSER', 'percentage', 15, 100000, 50000, 999999, NOW(), NOW() + INTERVAL '365 days'),
   ('FLASH20', 'percentage', 20, 100000, 100000, 200, NOW(), NOW() + INTERVAL '7 days');
